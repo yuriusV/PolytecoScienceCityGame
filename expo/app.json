@@ -1,0 +1,14 @@
+{
+  "expo": {
+    "sdkVersion": "25.0.0",
+    "orientation": "portrait",
+    "name": "Donkey Kong Game",
+    "description": "A React Native remake of the classic Donkey Kong arcade game. This app uses the React Native Game Engine library.",
+    "githubUrl": "https://github.com/bberak/react-native-donkey-kong",
+    "privacy": "public",
+    "primaryColor": "#000000",
+    "icon": "https://raw.githubusercontent.com/bberak/react-native-donkey-kong/master/assets/icons/kong.png",
+    "slug": "donkey-kong-game",
+    "version": "0.1.0"
+  }
+}
