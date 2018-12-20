@@ -1,5 +1,5 @@
 import React, { PureComponent } from "react";
-import Popup from "../popup";
+import Popup from "../menu-items/popup";
 import Message from "../message";
 import WiseMonkey from "./wise-monkey.gif";
 

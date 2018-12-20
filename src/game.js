@@ -7,7 +7,7 @@ import CameraRenderer from "./utils/cameraRenderer";
 import LevelOne from "./entities/level-1";
 import Systems from "./systems";
 
-export default class Game extends PureComponent {
+export default class GameMap extends PureComponent {
   constructor(props) {
     super(props);
     this.state = {

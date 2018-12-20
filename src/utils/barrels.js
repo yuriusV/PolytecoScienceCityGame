@@ -1,5 +1,5 @@
 import Matter from "matter-js";
-import { remove } from "./index";
+import { remove } from ".";
 
 const crack = (id, entities, dispatch) => {
 	let entity = entities[id];

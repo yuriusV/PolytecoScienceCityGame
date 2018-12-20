@@ -5,56 +5,61 @@ import {
   TouchableOpacity,
   View,
   Linking,
-  Platform
+  Platform,
+  ImageBackground,
+  Image
 } from "react-native";
 import EStyleSheet from "react-native-extended-stylesheet";
-import Title from "./title";
-import Heading from "./heading";
-import Button from "./button";
+import MenuButton from "./menu-items/button";
 import Item from "./item";
+import Logo from "../../assets/logo.png";
+import Background from "../../assets/menu-background.png";
+import Logic from "../logic/game-logic"
 
 export default class MainMenu extends PureComponent {
-  render() {
-    return (
-      <ScrollView
-        style={styles.container}
-        contentContainerStyle={styles.contentContainer}
-      >
-        <Title />
-        <Button onPress={this.props.onPlayGame}>Play Game</Button>
-        <Heading>{`Made With ${Platform.OS == "ios" ? "🍌🍌🍌" : ".."}`}</Heading>
-        <Item
-          onPress={_ =>
-            Linking.openURL(
-              "https://github.com/bberak/react-native-game-engine"
-            )}
-        >
-          React Native Game Engine
-        </Item>
-        <Item onPress={_ => Linking.openURL("http://brm.io/matter-js")}>
-          Matter Js
-        </Item>
-        <Item onPress={_ => Linking.openURL("https://www.aseprite.org")}>
-          Aseprite
-        </Item>
-        <Item
-          onPress={_ => Linking.openURL("https://www.spriters-resource.com")}
-        >
-          Spriters Resource
-        </Item>
-        <Heading>Copyright Notice</Heading>
-        <Item>
-          All content, artwork, sounds, characters and graphics are the property
-          of Nintendo of America Inc, its affiliates and/or subsidiaries.
-        </Item>
-      </ScrollView>
+	render() {
+		return (
+		<ImageBackground source={Background} style={{width: '100%', height: '100%'}}>
+			<ScrollView
+				style={styles.container}
+				contentContainerStyle={styles.contentContainer}>
+
+				<Image source={Logo} style={{width: 250, height: 80}}/>
+				<MenuButton 
+					onPress={_ => this.props.onMenuSelect(Logic.gameScenes.gameMap)}>
+					New game
+				</MenuButton>
+				<MenuButton 
+					onPress={_ => this.props.onMenuSelect(Logic.gameScenes.savedGames)}>
+					Saved games
+				</MenuButton>
+				<MenuButton 
+					onPress={_ => this.props.onMenuSelect(Logic.gameScenes.onlineTable)}>
+					Online table
+				</MenuButton>
+				<MenuButton 
+					onPress={_ => this.props.onMenuSelect(Logic.gameScenes.account)}>
+					Account
+				</MenuButton>
+
+				<Item
+				onPress={_ => Linking.openURL("https://github.com")}
+				>
+				Source code
+				</Item>
+				<Item>
+				Created by Brodyaga's group
+				</Item>
+			</ScrollView>
+		</ImageBackground>
     );
   }
 }
 
 const styles = EStyleSheet.create({
   container: {
-    backgroundColor: "$donkeyKongMenuBackgroundColor"
+	  paddingTop: '30%',
+	  paddingLeft: '10%'
   },
   contentContainer: {
     maxWidth: "$donkeyKongMenuMaxWidth",

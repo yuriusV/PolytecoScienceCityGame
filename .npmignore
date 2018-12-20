@@ -1,6 +1,0 @@
-# Don't want the standalone apps in the npm package
-rn/
-expo/
-
-# Don't want the assets in the npm pacakge
-assets/
