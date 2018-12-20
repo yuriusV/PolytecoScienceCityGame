@@ -1,15 +1,15 @@
-const initialsConsts = {
+const initialConsts = {
 	gameUserName: "Gamer",
 	gameCity: "City",
 	startMoney: 200,
 	startRespect: 100,
-	gameRows: 10,
-	gameCols: 10
+	gameRows: 6,
+	gameCols: 6
 };
 
 const building = () => ({
 	position: {row: 0, cell: 0},
-	type: "", // "small" | "medium" | "large" | "luxury",
+	type: "", // "small" | "medium" | "big"
 	countPeoples: 0
 });
 
@@ -21,8 +21,8 @@ const mapItem = () => ({
 const modelOfGame = () => ({
 	gameUserName: "",
 	gameCity: "",
-	money: initialsConsts.startMoney,
-	respect: initialsConsts.startRespect,
+	money: initialConsts.startMoney,
+	respect: initialConsts.startRespect,
 	map: [],
 	buildings: [],
 	secondsPlayed: 0
@@ -32,5 +32,5 @@ export default {
 	mapItem,
 	modelOfGame,
 	building,
-	initialsConsts
+	initialConsts
 };

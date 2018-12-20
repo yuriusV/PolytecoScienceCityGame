@@ -19,6 +19,16 @@ import SimpleView from './scene-elements/simple-view'
 import Logic from "../logic/game-logic";
 import Model from "../logic/game-model";
 
+import HouseSmall from "../../assets/tiles/small.png"
+import HouseMedium from "../../assets/tiles/medium.png"
+import HouseBig from "../../assets/tiles/big.png"
+import Grass from "../../assets/tiles/grass.jpg"
+import Stone from "../../assets/tiles/stone.png"
+import Park from "../../assets/tiles/park.png"
+import Fence from "../../assets/tiles/fence.png"
+import Ruined from "../../assets/tiles/ruined.png"
+
+
 export default class GameMap extends PureComponent {
 	constructor(props) {
 	  super(props);
@@ -31,17 +41,46 @@ export default class GameMap extends PureComponent {
 		return <View><Text>sadf</Text></View>
 	}
 
+	getImageByTypeMap = (type) => {
+		const map = {
+			"empty": Ruined,
+			"grass": Grass,
+			"forest": Park
+		};
+		return map[type] || Ruined;
+	};
+
+	getImageByBuilding = (type) => {
+		const map = {
+			"small": HouseSmall,
+			"medium": HouseMedium,
+			"big": HouseBig
+		};
+
+		return map(type);
+	};
+
 	drawMap = (map, buildings) => {
-		const result = [];
-		for(const row of map) {
-			const rowUiItems = [];
-			for(const cell of row) {
-				const buildingsOnCell = buildings.filter(x => x.row == 0); //todo
-				rowUiItems.push(this.drawCell(cell, buildingsOnCell && buildingsOnCell[0]));
+		const allCells = [];
+		const WIDTH = Math.ceil(100 / Model.initialConsts.gameRows);
+		const HEIGHT = Math.ceil(100 / Model.initialConsts.gameCols);
+
+		for(let row = 0; row < map.length; row++) {
+			for(let col = 0; col < map[row].length; col++) {
+				const buildings = buildings && buildings.filter(x => x.row == row && x.col == col);
+
+				allCells.push(
+					<SimpleView position={[col * WIDTH, row * HEIGHT, WIDTH, HEIGHT]}>
+						<Image source={this.getImageByTypeMap(map[row, col].type)} style={{width: 60, height: 60}}/>
+						{buildings && buildings.length > 0 ? 
+							<Image source={this.getImageByBuilding(buildings && buildings[0].type)}/>	
+						: null} 
+					</SimpleView>
+				);
 			}
-			const uiRow = <View style={styles.row}>{rowUiItems}</View>
-			result.push(uiRow);
 		}
+
+		return allCells;
 	}
   
 	render() {
@@ -50,7 +89,7 @@ export default class GameMap extends PureComponent {
 			<View style={{width: '100%', height: '100%'}}>
 				<SimpleView
 					style={{backgroundColor: "#BBBBBB"}}
-					position={[30, 10, 40, 10]}>
+					position={[20, 14, 40, 10]}>
 				
 					<Text>
 						Money - {this.state.gameModel.money}
@@ -60,7 +99,7 @@ export default class GameMap extends PureComponent {
 					</Text>
 				</SimpleView>
 
-				<SimpleView style={{backgroundColor: "#BBBBBB"}} position={[10, 20, 80, 30]}>
+				<SimpleView style={{backgroundColor: "#BBBBBB"}} position={[10, 30, 80, 50]}>
 					{this.drawMap(this.state.gameModel.map, this.state.gameModel.buildings)}
 				</SimpleView>
 				

@@ -19,8 +19,8 @@ export default class SimpleView extends PureComponent {
 
 		const result = {
 			position: 'absolute',
-			top: str(array[0]), 
-			left: str(array[1]), 
+			left: str(array[0]), 
+			top: str(array[1]), 
 			width: str(array[2]), 
 			height: str(array[3])
 		};

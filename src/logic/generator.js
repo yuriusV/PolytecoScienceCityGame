@@ -5,9 +5,9 @@ const randomInt = (from, to) => Math.floor(Math.random() * (to - from)) + to;
 const generateMap = () => {
 	let map = [];
 	const types = ["empty", "grass", "forest"] 
-	for(let i = Model.initialsConsts.gameRows - 1; i >= 0; --i) {
+	for(let i = Model.initialConsts.gameRows - 1; i >= 0; --i) {
 		const row = [];
-		for(let j = Model.initialsConsts.gameRows - 1; j >= 0; --j) {
+		for(let j = Model.initialConsts.gameCols - 1; j >= 0; --j) {
 			row.push({type: types[randomInt(0, types.length - 1)]});
 		}
 		map.push(row);
