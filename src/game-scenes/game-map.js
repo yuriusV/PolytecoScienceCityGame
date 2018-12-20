@@ -13,8 +13,10 @@ import {
 } from "react-native";
 import Background from "../../assets/menu-background.png";
 import { map } from "../../node_modules/rxjs/operators";
+
 import SideButton from './scene-elements/side-button'
 import SimpleView from './scene-elements/simple-view'
+import Popup from '../menus/menu-items/popup'
 
 import Logic from "../logic/game-logic";
 import Model from "../logic/game-model";
@@ -33,7 +35,9 @@ export default class GameMap extends PureComponent {
 	constructor(props) {
 	  super(props);
 	  this.state = {
-		gameModel: props.gameModel
+		gameModel: props.gameModel,
+		isMenuPopupVisible: false,
+		menuContent: {}
 	  };
 	}
 
@@ -70,11 +74,20 @@ export default class GameMap extends PureComponent {
 				const buildings = buildings && buildings.filter(x => x.row == row && x.col == col);
 
 				allCells.push(
-					<SimpleView position={[col * WIDTH, row * HEIGHT, WIDTH, HEIGHT]}>
-						<Image source={this.getImageByTypeMap(map[row][col].type)} style={{width: 60, height: 60}}/>
+					<SimpleView 
+						position={[col * WIDTH, row * HEIGHT, WIDTH, HEIGHT]}>
+						<Image 
+							source={this.getImageByTypeMap(map[row][col].type)} 
+							style={{width: 45, height: 45}}/>
+
 						{buildings && buildings.length > 0 ? 
-							<Image source={this.getImageByBuilding(buildings && buildings[0].type)}/>	
+							<Image 
+								source={this.getImageByBuilding(
+									buildings && buildings[0].type)}
+								style={{width: 45, height: 45}}	
+								/>	
 						: null} 
+
 					</SimpleView>
 				);
 			}
@@ -100,15 +113,19 @@ export default class GameMap extends PureComponent {
 					</Text>
 				</SimpleView>
 
-				<SimpleView style={{backgroundColor: "#BBBBBB"}} position={[10, 30, 80, 50]}>
+				<SimpleView style={{backgroundColor: "#00EE00"}} position={[10, 30, 80, 50]}>
 					{this.drawMap(this.state.gameModel.map, this.state.gameModel.buildings)}
 				</SimpleView>
 				
-				<SideButton text="Menu" position={[0, 90, 50, 10]}/>
+				<SideButton text="< Menu" position={[0, 90, 50, 10]}/>
 				<SideButton text="Manage" position={[50, 90, 50, 10]}/>
 				<SideButton text="Start" position={[50, 0, 50, 10]}/>
 				<SideButton text="Buy" position={[0, 0, 50, 10]}/>
 				
+				{this.state.isMenuPopupVisible ? 
+				(<Popup onQuit={this.props.onQuit}>
+					<Text>text</Text>
+				</Popup>) : null}
 			</View>
 		</ImageBackground>
 	  );

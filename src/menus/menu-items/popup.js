@@ -38,14 +38,8 @@ export default class Popup extends PureComponent {
 					{this.props.children}
 				</ScrollView>
 
-				<Button
-					onPress={this.props.onPlayAgain}
-					style={styles.playGameButton}
-				>
-					Play Again
-				</Button>
 				<Button onPress={this.props.onQuit} style={styles.cancelButton}>
-					No Thanks!
+					Close
 				</Button>
 			</Animatable.View>
 		);
