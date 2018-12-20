@@ -1,6 +1,10 @@
 import Model from "./game-model";
 
-const randomInt = (from, to) => Math.floor(Math.random() * (to - from)) + to;
+const randomInt  = (min, max) => {
+    min = Math.ceil(min);
+    max = Math.floor(max);
+    return Math.floor(Math.random() * (max - min + 1)) + min;
+}
 
 const generateMap = () => {
 	let map = [];
@@ -10,9 +14,8 @@ const generateMap = () => {
 		for(let j = Model.initialConsts.gameCols - 1; j >= 0; --j) {
 			row.push({type: types[randomInt(0, types.length - 1)]});
 		}
-		map.push(row);
+		map.push(row);  
 	}
-
 	return map;
 };
 

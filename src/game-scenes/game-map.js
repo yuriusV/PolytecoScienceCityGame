@@ -71,7 +71,7 @@ export default class GameMap extends PureComponent {
 
 				allCells.push(
 					<SimpleView position={[col * WIDTH, row * HEIGHT, WIDTH, HEIGHT]}>
-						<Image source={this.getImageByTypeMap(map[row, col].type)} style={{width: 60, height: 60}}/>
+						<Image source={this.getImageByTypeMap(map[row][col].type)} style={{width: 60, height: 60}}/>
 						{buildings && buildings.length > 0 ? 
 							<Image source={this.getImageByBuilding(buildings && buildings[0].type)}/>	
 						: null} 
@@ -84,6 +84,7 @@ export default class GameMap extends PureComponent {
 	}
   
 	render() {
+
 	  return (
 		<ImageBackground source={Background} style={{width: '100%', height: '100%'}}>
 			<View style={{width: '100%', height: '100%'}}>
