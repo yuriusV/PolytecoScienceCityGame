@@ -18,7 +18,7 @@ export default class GameMap extends PureComponent {
   
 	render() {
 	  return (
-		<ImageBackground source={Background}>
+		<ImageBackground source={Background} style={{width: '100%', height: '100%'}}>
 		  
 		</ImageBackground>
 	  );

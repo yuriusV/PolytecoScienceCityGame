@@ -26,6 +26,10 @@ export default class MainMenu extends PureComponent {
 
 				<Image source={Logo} style={{width: 250, height: 80}}/>
 				<MenuButton 
+					onPress={_ => this.props.onMenuSelect(Logic.gameScenes.blockGame)}>
+					Quick block game
+				</MenuButton>
+				<MenuButton 
 					onPress={_ => this.props.onMenuSelect(Logic.gameScenes.gameMap)}>
 					New game
 				</MenuButton>

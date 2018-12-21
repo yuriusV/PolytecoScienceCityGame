@@ -10,6 +10,7 @@ import GameMap from "./src/game-scenes/game-map";
 import SavedGamesMenu from "./src/game-scenes/saved-games-menu";
 import OnlineTableMenu from "./src/game-scenes/online-table-menu";
 import AccountMenu from "./src/game-scenes/account-menu";
+import BlockGame from './src/game-scenes/block-game'
 
 const defaultTheme = {
   $donkeyKongMenuMaxWidth: 500,
@@ -60,10 +61,15 @@ export default class PolytecoGame extends PureComponent {
 			currentContainer = 
 				<SavedGamesMenu onClose={_ => this.openMainMenu()}/>
 			break;
+		case Logic.gameScenes.blockGame:
+			currentContainer = 
+				<BlockGame onClose={_ => this.openMainMenu()}/>
+			break;
 		default: 
 			currentContainer = 
 				<MainMenu onMenuSelect={scene => this.openScene(scene)}/>
 			break;
+		
 	}
 
     return (
