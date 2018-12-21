@@ -1,46 +1,55 @@
 import React, { PureComponent } from "react";
-import { ScrollView, View, Dimensions } from "react-native";
+import { ScrollView, View, Dimensions, Text } from "react-native";
 import * as Animatable from "react-native-animatable";
 import EStyleSheet from "react-native-extended-stylesheet";
-import Button from "./button";
+import Popup from "../../menus/menu-items/popup"
+import Button from "../../menus/menu-items/button"
 
+import Logic from "../../logic/game-logic"
 
-export default class Popup extends PureComponent {
+export default class MapManage extends PureComponent {
 	constructor(props) {
 		super(props);
 		this.state = {};
 	}
 
+	getPopupButtons = () => {
+		console.log('test');
+		return (
+			[
+			<Button>
+				Apply
+			</Button>
+			,
+			<Button>
+				Close
+			</Button>
+			]
+		);
+	};
+	getStore = () => {
+		return (
+			Logic.mapManage.map(x => (
+				this.getListItem(x)
+			))
+		);
+	};
+	getListItem = (storeLogicItem) => {
+		return (
+			<Text>
+				{storeLogicItem.name}
+			</Text>
+		);
+	};
+
 	render() {
 		return (
-			<Animatable.View
-				useNativeDriver
-				style={styles.container}
-				animation="bounceInUp"
-			>
-				<ScrollView
-					ref={"scrollView"}
-					onContentSizeChange={_ => {
-						this.refs.scrollView.scrollToEnd({
-							animated: true
-						});
-					}}
-					onLayout={({ nativeEvent: { layout: { height } } }) =>
-						this.setState({
-							scrollViewHeight: height
-						})}
-					contentContainerStyle={[
-						styles.scrollViewContainer,
-						{
-							minHeight: this.state.scrollViewHeight
-						}
-					]}
-				>
-					{this.props.children}
-				</ScrollView>
-
-				{this.props.buttons}
-			</Animatable.View>
+			<Popup buttons={this.getPopupButtons}>
+				<Text>Manage</Text>
+				<View>
+					{this.getStore}
+				</View>
+			</Popup>
 		);
 	}
 }

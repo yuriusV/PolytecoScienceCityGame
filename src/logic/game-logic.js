@@ -58,10 +58,49 @@ const canBuyAtMap = {
 	]
 };
 
+const mapManage = {
+	items: [
+		{
+			name: "Buy shaurma",
+			cost: 50,
+			modifier(gameModel, config) {
+				gameModel.respect += config.count;
+				gameModel.money -= config.count;
+			},
+			can(gameModel, config) {
+				return gameModel.money >= config.count;
+			}
+		},
+		{
+			name: "Destroy building",
+			cost: 10,
+			modifier(gameModel, config) {
+				const bs = gameModel.buildings.filter(x => 
+					x.row == config.row 
+					&& x.col == config.col);
+				
+				if (bs.length !== 1) {
+					return false;
+				}
+
+				gameModel.buildings = gameModel.buildings.filter(x =>
+					!(
+						x.row == config.row
+						&& x.col == config.col
+					));
+			},
+			can(gameModel, config) {
+				return gameModel.money >= 10;
+			}
+		}
+	]
+};
+
 const logic = {
 	gameScenes,
 	preHistoryMessages,
-	canBuyAtMap
+	canBuyAtMap,
+	mapManage 
 };
 
 

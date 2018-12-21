@@ -23,6 +23,10 @@ import Logic from "../logic/game-logic";
 import Model from "../logic/game-model";
 import Manager from "../logic/game-store-manager";
 
+import MapManage from "./scene-elements/game-map-manage";
+import MapShop from "./scene-elements/game-map-shop"
+import MapStart from "./scene-elements/game-map-start"
+
 import HouseSmall from "../../assets/tiles/small.png"
 import HouseMedium from "../../assets/tiles/medium.png"
 import HouseBig from "../../assets/tiles/big.png"
@@ -41,10 +45,6 @@ export default class GameMap extends PureComponent {
 		isMenuPopupVisible: false,
 		menuContent: {}
 	  };
-	}
-
-	drawCell = (cell, building) => {
-		return <View><Text>sadf</Text></View>
 	}
 
 	getImageByTypeMap = (type) => {
@@ -125,12 +125,7 @@ export default class GameMap extends PureComponent {
 				<SideButton onPress={this.onClickStart} text="Start" position={[50, 0, 50, 10]}/>
 				<SideButton onPress={this.onClickShop} text="Buy" position={[0, 0, 50, 10]}/>
 				
-				{this.state.isMenuPopupVisible ? 
-				(<Popup onBuy={config => this.onBuy(config)} 
-					onQuit={_ => this.setState({isMenuPopupVisible: false})}>
-					{this.state.popupContent}
-				</Popup>) : null}
-
+				{this.getPopup}
 			</View>) : (
 				<BlockGame onFinish={result => this.onBlockGameFinished(result)}/>
 			)}
@@ -138,36 +133,64 @@ export default class GameMap extends PureComponent {
 	  );
 	}
 
+	getPopup = () => {
+		return this.state.isMenuPopupVisible ? 
+				this.state.popupContent : null;
+	};
+
 	onClickBackMenu = () => {
 		Manager.updateCurrentGame(this.state.gameModel);
 		this.props.onClose();
 	};
 
 	onClickStart = () => {
-		Manager.updateCurrentGame(this.state.gameModel);
-		this.setState({isGameStarted: true});
+		
+		this.showPopup(
+			<MapStart onSubmitBuild={this.onSubmitBuild} onQuit={this.closePopup}>
+				
+			</MapStart>
+		);
+	};
+
+	onClickManage = () => {
+		this.showPopup(
+			<MapManage onApply={this.onManageApply} onQuit={this.closePopup}>
+
+			</MapManage>
+		)
+	};
+
+	onClickShop = () => {
+		this.showPopup(
+			<MapShop onBuy={this.onBuy} onQuit={this.closePopup}>
+
+			</MapShop>
+		);
 	};
 
 	onBlockGameFinished = (result) => {
 
 	};
 
-	onClickManage = () => {
-		this.setState({isMenuPopupVisible: true})
-	};
-
-	onClickShop = () => {
-		this.showPopup(
-			
-		);
-	};
-
 	onBuy = () => {
 		this.showPopup();
 	};
 
+	onManageApply = (result) => {
+
+	};
+
+	onSubmitBuild = (building) => {
+		Manager.updateCurrentGame(this.state.gameModel);
+		this.setState({isGameStarted: true});
+	};
+
 	showPopup = (content) => {
 		this.setState({isMenuPopupVisible: true, popupContent: content});
+	};
+
+	closePopup= () => {
+		this.setState({isMenuPopupVisible: false});
 	};
   }
   
