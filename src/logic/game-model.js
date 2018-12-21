@@ -25,7 +25,9 @@ const modelOfGame = () => ({
 	respect: initialConsts.startRespect,
 	map: [],
 	buildings: [],
-	secondsPlayed: 0
+	secondsPlayed: 0,
+	gold: 0,
+	allowBuilds: []
 });
 
 export default {

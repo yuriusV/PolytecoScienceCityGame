@@ -58,9 +58,7 @@ export default class NewGameMap extends React.Component {
 			enterBox = <View>
 			</View>
 		}
-			
-			
-
+		
 		return (
 			<ImageBackground source={Background} 
 				style={{width: '100%', height: '100%'}}>
@@ -112,7 +110,7 @@ export default class NewGameMap extends React.Component {
 
 	getGameView = () => {
 		return (
-			<GameMap gameModel={this.state.gameModel}/>
+			<GameMap gameModel={this.state.gameModel} onClose={this.props.onClose}/>
 		);
 	};
   

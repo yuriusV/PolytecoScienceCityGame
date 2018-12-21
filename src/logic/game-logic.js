@@ -31,9 +31,37 @@ const preHistoryMessages = {
 	]
 };
 
+const canBuyAtMap = {
+	products: [
+		{
+			name: "Allow build",
+			cost: 50,
+			modifier(gameModel, config) {
+				gameModel.allowBuilds.push({row: config.row, col: config.col})
+				gameModel.gold -= 50;
+			},
+			can(gameModel) {
+				return gameModel.gold >= 50;
+			}
+		},
+		{
+			name: "Get 50 credits",
+			cost: 50,
+			modifier(gameModel, config) {
+				gameModel.gold -= 50
+				gameModel.money += 50
+			},
+			can(gameModel) {
+				return gameModel.gold > 50;
+			}
+		}
+	]
+};
+
 const logic = {
 	gameScenes,
-	preHistoryMessages
+	preHistoryMessages,
+	canBuyAtMap
 };
 
 

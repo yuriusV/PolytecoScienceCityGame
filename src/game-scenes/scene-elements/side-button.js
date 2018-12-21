@@ -1,5 +1,5 @@
 import React, { PureComponent } from "react";
-import { View, StatusBar, Platform, Text } from "react-native";
+import { View, StatusBar, Platform, Text, TouchableOpacity  } from "react-native";
 import EStyleSheet from "react-native-extended-stylesheet";
 
 
@@ -28,7 +28,8 @@ export default class SideButton extends PureComponent {
 	render() {
 
 		return (
-			<View
+			<TouchableOpacity 
+				onPress={this.props.onPress}
 				style={this.positionStyleFromArray(this.state.position)}>
 				<Text style={{
 					color: 'white',
@@ -39,7 +40,7 @@ export default class SideButton extends PureComponent {
 
 					{this.state.text}
 				</Text>
-			</View>
+			</TouchableOpacity >
 		);
 	}
 }

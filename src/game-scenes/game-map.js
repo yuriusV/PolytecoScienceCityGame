@@ -17,9 +17,11 @@ import { map } from "../../node_modules/rxjs/operators";
 import SideButton from './scene-elements/side-button'
 import SimpleView from './scene-elements/simple-view'
 import Popup from '../menus/menu-items/popup'
+import BlockGame from './block-game';
 
 import Logic from "../logic/game-logic";
 import Model from "../logic/game-model";
+import Manager from "../logic/game-store-manager";
 
 import HouseSmall from "../../assets/tiles/small.png"
 import HouseMedium from "../../assets/tiles/medium.png"
@@ -100,15 +102,16 @@ export default class GameMap extends PureComponent {
 
 	  return (
 		<ImageBackground source={Background} style={{width: '100%', height: '100%'}}>
-			<View style={{width: '100%', height: '100%'}}>
+			{!this.state.isGameStarted ?
+			(<View style={{width: '100%', height: '100%'}}>
 				<SimpleView
-					style={{backgroundColor: "#BBBBBB"}}
+					style={{backgroundColor: "#AA"}}
 					position={[20, 14, 40, 10]}>
 				
-					<Text>
+					<Text style={{fontFamily: "ArcadeClassic", color: "white", fontSize: 30}}>
 						Money - {this.state.gameModel.money}
 					</Text>
-					<Text>
+					<Text style={{fontFamily: "ArcadeClassic", color: "white", fontSize: 30}}>
 						Respect - {this.state.gameModel.respect}
 					</Text>
 				</SimpleView>
@@ -117,19 +120,55 @@ export default class GameMap extends PureComponent {
 					{this.drawMap(this.state.gameModel.map, this.state.gameModel.buildings)}
 				</SimpleView>
 				
-				<SideButton text="< Menu" position={[0, 90, 50, 10]}/>
-				<SideButton text="Manage" position={[50, 90, 50, 10]}/>
-				<SideButton text="Start" position={[50, 0, 50, 10]}/>
-				<SideButton text="Buy" position={[0, 0, 50, 10]}/>
+				<SideButton onPress={this.onClickBackMenu} text="< Menu" position={[0, 90, 50, 10]}/>
+				<SideButton onPress={this.onClickManage} text="Manage" position={[50, 90, 50, 10]}/>
+				<SideButton onPress={this.onClickStart} text="Start" position={[50, 0, 50, 10]}/>
+				<SideButton onPress={this.onClickShop} text="Buy" position={[0, 0, 50, 10]}/>
 				
 				{this.state.isMenuPopupVisible ? 
-				(<Popup onQuit={this.props.onQuit}>
-					<Text>text</Text>
+				(<Popup onBuy={config => this.onBuy(config)} 
+					onQuit={_ => this.setState({isMenuPopupVisible: false})}>
+					{this.state.popupContent}
 				</Popup>) : null}
-			</View>
+
+			</View>) : (
+				<BlockGame onFinish={result => this.onBlockGameFinished(result)}/>
+			)}
 		</ImageBackground>
 	  );
 	}
+
+	onClickBackMenu = () => {
+		Manager.updateCurrentGame(this.state.gameModel);
+		this.props.onClose();
+	};
+
+	onClickStart = () => {
+		Manager.updateCurrentGame(this.state.gameModel);
+		this.setState({isGameStarted: true});
+	};
+
+	onBlockGameFinished = (result) => {
+
+	};
+
+	onClickManage = () => {
+		this.setState({isMenuPopupVisible: true})
+	};
+
+	onClickShop = () => {
+		this.showPopup(
+			
+		);
+	};
+
+	onBuy = () => {
+		this.showPopup();
+	};
+
+	showPopup = (content) => {
+		this.setState({isMenuPopupVisible: true, popupContent: content});
+	};
   }
   
  var styles = StyleSheet.create({

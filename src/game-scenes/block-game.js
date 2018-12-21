@@ -1,5 +1,10 @@
 import React, { PureComponent } from "react";
-import { StyleSheet, Modal, View } from "react-native";
+import { StyleSheet, Modal, View, ImageBackground } from "react-native";
+
+import Background from "../../assets/blocks/block-background.png"
+import Hook from "../../assets/blocks/hook.png"
+import BlockRope from "../../assets/blocks/block-rope.png"
+import BlockPerfect from "../../assets/blocks/block-perfect.png";
 
 export default class GameMap extends PureComponent {
 	constructor(props) {
@@ -13,10 +18,9 @@ export default class GameMap extends PureComponent {
   
 	render() {
 	  return (
-		<View
-		>
+		<ImageBackground source={Background}>
 		  
-		</View>
+		</ImageBackground>
 	  );
 	}
   }
