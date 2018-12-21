@@ -80,7 +80,7 @@ export default class GameMap extends Component {
 	};
 
 	createUpdater = () => {
-		const interval = setInterval(() => {
+		this.state.interval = setInterval(() => {
 			for(let i in this.state.gameModel.buildings) {
 				const bModel = this.state.gameModel.buildings[i];
 				const b = this.getBuildingByType(bModel.type);
@@ -216,6 +216,7 @@ export default class GameMap extends Component {
 
 	onClickBackMenu = () => {
 		Manager.updateCurrentGame(this.state.gameModel);
+		this.state.interval && clearInterval(this.state.interval)
 		this.props.onClose();
 	};
 
@@ -257,10 +258,11 @@ export default class GameMap extends Component {
 	};
 
 	onBlockGameFinished = (result) => {
-
+		this.createUpdater();
 	}; 
 
 	onSelectBuilding = (menu) => {
+		this.state.interval && clearInterval(this.state.interval)
 		const building = Logic.buildings.items.filter(x => x.name == menu);
 		if (building && building.length > 0) {
 			this.state.gameModel.money -= building[0].cost;
