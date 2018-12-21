@@ -17,8 +17,11 @@ import Logic from "../logic/game-logic";
 import Model from "../logic/game-model";
 import Generator from "../logic/generator";
 
+import SimpleView from './scene-elements/simple-view'
+import SimpleText from './scene-elements/simple-font'
 import GameMap from './game-map';
 import MenuButton from "../menus/menu-items/button";
+import ReadableBlock from "./scene-elements/readable-block"
 
 import Modal from "../../assets/modals/modal.png";
 import Background from "../../assets/menu-background.png";
@@ -26,18 +29,18 @@ import Background from "../../assets/menu-background.png";
 
 export default class NewGameMap extends React.Component {
 	constructor(props) {
-	  super(props);
+	  super(props); 
 	  this.state = {
 		currentStoryIndex: 0,
 		storyItem: Logic.preHistoryMessages.messages[0],
 		gameModel: this.createStartGameModel(),
-		currentText: "",
+		currentText: "", 
 		isGameRunned: false
 	  };
 
 	  //TODO
-	  this.state.gameModel.map = Generator.generateMap();
-	  this.state.gameModel.gold = 100;
+	  //this.state.gameModel.map = Generator.generateMap();
+	  //this.state.gameModel.gold = 100;
 	}
 
 	createStartGameModel= () => {
@@ -48,31 +51,32 @@ export default class NewGameMap extends React.Component {
 		let enterBox;
 		if (storyItem.inputs 
 			&& storyItem.inputs.length > 0) {
-			enterBox = <View  style={{paddingTop: 50, paddingLeft: 30}}>
+			enterBox = 
 				<TextInput
-					style={{height: 40, borderColor: 'gray', borderWidth: 1}}
+					style={{height: 40, borderColor: 'red', borderWidth: 1}}
 					onChangeText={(currentText) => this.setState({currentText})}
 					value={this.state.currentText}
 				/>
-			</View>
 		} else {
 			enterBox = <View>
 			</View>
 		}
-		
+
 		return (
 			<ImageBackground source={Background} 
 				style={{width: '100%', height: '100%'}}>
-				<View style={{paddingTop: 50, paddingLeft: 30}}>
-					<ImageBackground source={Modal} 
-						style={{ width: '90%', height: '110%'}}>
-						<Text style={styles.text}>{storyItem.text}</Text>
-					</ImageBackground>
-				</View>
-				{enterBox}
-				<MenuButton onClick={this.onNextClick}>
-					Next
-				</MenuButton>
+				<ReadableBlock 
+					position={[10, 10, 80, 35]} 
+					 text={this.state.storyItem.text}/>
+				<SimpleView position={[15, 30, 70, 10]}>
+					{enterBox}
+				</SimpleView>
+				
+				<SimpleView position={[10, 45, 80, 10]}>
+					<MenuButton onPress={this.onNextClick}>
+						Next
+					</MenuButton>
+				</SimpleView>
 			</ImageBackground>
 		);
 	};
@@ -96,7 +100,7 @@ export default class NewGameMap extends React.Component {
 			Logic.preHistoryMessages.messages.length <= this.state.currentStoryIndex + 1) {
 				this.startGame();
 		} else {
-			this.state.setState({
+			this.setState({
 				currentStoryIndex: this.state.currentStoryIndex + 1,
 				storyItem: Logic.preHistoryMessages.messages[this.state.currentStoryIndex + 1],
 				currentText: ""
@@ -117,8 +121,8 @@ export default class NewGameMap extends React.Component {
   
 	render() {
 	  return (
-		  //TODO
-		this.state.isGameRunned || true ?
+		//TODO
+		this.state.isGameRunned/* || true*/ ?
 		this.getGameView()
 		:
 		 this.getViewForStoryItem(this.state.storyItem)
