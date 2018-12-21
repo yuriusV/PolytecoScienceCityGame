@@ -17,11 +17,11 @@ export default class MapManage extends PureComponent {
 		console.log('test');
 		return (
 			[
-			<Button>
+			<Button onPress={this.props.onApply}>
 				Apply
 			</Button>
 			,
-			<Button>
+			<Button onPress={this.props.onQuit}>
 				Close
 			</Button>
 			]
@@ -44,7 +44,7 @@ export default class MapManage extends PureComponent {
 
 	render() {
 		return (
-			<Popup buttons={this.getPopupButtons}>
+			<Popup buttons={this.getPopupButtons()}>
 				<Text>Manage</Text>
 				<View>
 					{this.getStore}

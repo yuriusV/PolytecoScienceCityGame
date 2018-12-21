@@ -125,7 +125,7 @@ export default class GameMap extends PureComponent {
 				<SideButton onPress={this.onClickStart} text="Start" position={[50, 0, 50, 10]}/>
 				<SideButton onPress={this.onClickShop} text="Buy" position={[0, 0, 50, 10]}/>
 				
-				{this.getPopup}
+				{this.getPopup()}
 			</View>) : (
 				<BlockGame onFinish={result => this.onBlockGameFinished(result)}/>
 			)}
