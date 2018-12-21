@@ -47,6 +47,24 @@ export default class GameMap extends PureComponent {
 		selectedRow: null,
 		selectedCol: null
 	  };
+
+	  this.state.gameModel.buildings.push({
+		position: {row: 0, col: 0},
+		type: "small", // "small" | "medium" | "big"
+		countPeoples: 10
+	  })
+
+	  this.state.gameModel.buildings.push({
+		position: {row: 5, col: 3},
+		type: "big", // "small" | "medium" | "big"
+		countPeoples: 10
+	  })
+
+	  this.state.gameModel.buildings.push({
+		position: {row: 4, col: 3},
+		type: "medium", // "small" | "medium" | "big"
+		countPeoples: 10
+	  })
 	}
 
 	getImageByTypeMap = (type) => {
@@ -59,39 +77,65 @@ export default class GameMap extends PureComponent {
 	};
 
 	getImageByBuilding = (type) => {
+		console.log('AAAAAAAAa', type);
 		const map = {
 			"small": HouseSmall,
 			"medium": HouseMedium,
 			"big": HouseBig
 		};
 
-		return map(type);
+		return map[type];
+	};
+
+	callPressMap = (row, col) => {
+		if (this.state.selectedRow == row && this.state.selectedCol == col) {
+			this.setState({
+				selectedRow: null,
+				selectedCol: null
+			});
+		} else {
+			this.setState({
+				selectedRow: row,
+				selectedCol: col
+			});
+		}
+		
 	};
 
 
-	drawMap = (map, buildings) => {
+	drawMap = (map, buildingsA) => {
 		const allCells = [];
 		const WIDTH = Math.ceil(100 / Model.initialConsts.gameRows);
 		const HEIGHT = Math.ceil(100 / Model.initialConsts.gameCols);
-
+		
 		for(let row = 0; row < map.length; row++) {
 			for(let col = 0; col < map[row].length; col++) {
-				const buildings = buildings && buildings.filter(x => x.row == row && x.col == col);
+				const buildings = buildingsA && buildingsA.filter(x => x.position.row == row 
+					&& x.position.col == col);
 
 				allCells.push(
-					<SimpleView 
+					<SimpleView
+						style={{
+							backgroundColor: 
+								this.state.selectedRow == row 
+								&& this.state.selectedCol == col ? "yellow": "#555555"}}
+						touch
+						onPress={_ => this.callPressMap(row, col)}
 						position={[col * WIDTH, row * HEIGHT, WIDTH, HEIGHT]}>
-						<Image 
-							source={this.getImageByTypeMap(map[row][col].type)} 
-							style={{width: 45, height: 45}}/>
-
 						{buildings && buildings.length > 0 ? 
 							<Image 
 								source={this.getImageByBuilding(
 									buildings && buildings[0].type)}
 								style={{width: 45, height: 45}}	
 								/>	
-						: null} 
+						: 
+						<Image 
+							source={this.getImageByTypeMap(map[row][col].type)} 
+							style={{top: 3, left: 2, width: 45, height: 45}}/>
+						} 
+						
+
+						
 
 					</SimpleView>
 				);
@@ -122,7 +166,7 @@ export default class GameMap extends PureComponent {
 					</Text>
 				</SimpleView>
 
-				<SimpleView style={{backgroundColor: "#00EE00"}} position={[10, 30, 80, 50]}>
+				<SimpleView style={{backgroundColor: "#555555"}} position={[10, 30, 80, 50]}>
 					{this.drawMap(this.state.gameModel.map, this.state.gameModel.buildings)}
 				</SimpleView>
 				
@@ -191,7 +235,7 @@ export default class GameMap extends PureComponent {
 
 	onBlockGameFinished = (result) => {
 
-	};
+	}; 
 
 	onSelectBuilding = (menu) => {
 		const building = Logic.buildings.items.filter(x => x.name == menu);
