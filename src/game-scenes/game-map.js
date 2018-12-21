@@ -68,6 +68,7 @@ export default class GameMap extends PureComponent {
 		return map(type);
 	};
 
+
 	drawMap = (map, buildings) => {
 		const allCells = [];
 		const WIDTH = Math.ceil(100 / Model.initialConsts.gameRows);
@@ -112,7 +113,7 @@ export default class GameMap extends PureComponent {
 				
 					<Text style={{fontFamily: "ArcadeClassic", color: "white", fontSize: 30}}>
 						Money - {this.state.gameModel.money}
-					</Text>
+					</Text>  
 					<Text style={{fontFamily: "ArcadeClassic", color: "white", fontSize: 30}}>
 						Respect - {this.state.gameModel.respect}
 					</Text>
@@ -130,9 +131,12 @@ export default class GameMap extends PureComponent {
 				<SideButton onPress={this.onClickStart} text="Start" position={[50, 0, 50, 10]}/>
 				<SideButton onPress={this.onClickShop} text="Buy" position={[0, 0, 50, 10]}/>
 				
-				{this.getPopup()}
+			 	{this.getPopup()}
 			</View>) : (
-				<BlockGame onFinish={result => this.onBlockGameFinished(result)}/>
+				<BlockGame  
+					gameModel={this.state.gameModel}
+					buildingType={this.state.selectedBuildingType}
+					onQuit={result => this.onBlockGameFinished(result)}/>
 			)}
 		</ImageBackground>
 	  );
@@ -151,12 +155,16 @@ export default class GameMap extends PureComponent {
 	onClickStart = () => {
 		
 		this.showPopup(
-			<MapStart onSubmitBuild={this.onSubmitBuild} onQuit={this.closePopup}>
+			<MapStart 
+				gameModel={this.state.gameModel}
+				gameProcessState={{selectedBuilding: {row: this.state.selectedRow, col: this.state.selectedCol}}} 
+				onApply={this.onSelectBuilding} 
+				onQuit={this.closePopup}>
 				
 			</MapStart>
 		);
 	};
-
+  
 	onClickManage = () => {
 		this.showPopup(
 			<MapManage 
@@ -183,6 +191,15 @@ export default class GameMap extends PureComponent {
 
 	onBlockGameFinished = (result) => {
 
+	};
+
+	onSelectBuilding = (menu) => {
+		const building = Logic.buildings.items.filter(x => x.name == menu);
+		if (building && building.length > 0) {
+			this.state.gameModel.money -= building[0].cost;
+			this.setState({isGameStarted: true, selectedBuildingType: menu});
+		}
+		
 	};
 
 	onBuy = (menuName) => {

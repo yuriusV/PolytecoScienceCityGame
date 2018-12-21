@@ -1,3 +1,8 @@
+import Small from "../../assets/tiles/small.png"
+import Medium from "../../assets/tiles/medium.png"
+import Big from "../../assets/tiles/big.png"
+
+
 const gameScenes = {
 	gameMap: "GameMap",
 	onlineTable: "OnlineTable",
@@ -100,11 +105,56 @@ const mapManage = {
 	]
 };
 
+const buildings = {
+	items: [
+		{
+			name: "Small",
+			image: Small,
+			cost: 100,
+			peoplesMax: 100,
+			countBlocks: 10,
+			paymentFromOnePeople: 1,
+			respectFromOnePeople: 1,
+
+			can(gameModel, config) {
+				return gameModel.money >= 100;
+			}
+		},
+		{
+			name: "Medium",
+			image: Medium,
+			cost: 200,
+			peoplesMax: 200,
+			countBlocks: 20,
+			paymentFromOnePeople: 2,
+			respectFromOnePeople: 2,
+
+			can(gameModel, config) {
+				return gameModel.money >= 200;
+			}
+		},
+		{
+			name: "Big",
+			image: Big,
+			cost: 300,
+			peoplesMax: 300,
+			countBlocks: 30,
+			paymentFromOnePeople: 3,
+			respectFromOnePeople: 3,
+
+			can(gameModel, config) {
+				return gameModel.money >= 300;
+			}
+		}
+	]
+};
+
 const logic = {
 	gameScenes,
 	preHistoryMessages,
 	canBuyAtMap,
-	mapManage 
+	mapManage,
+	buildings
 };
 
 
