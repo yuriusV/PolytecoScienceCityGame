@@ -12,36 +12,81 @@ import Logic from "../../logic/game-logic"
 export default class MapShop extends PureComponent {
 	constructor(props) {
 		super(props);
-		this.state = {};
+		this.state = {
+			menu: ""
+		};
 	}
 
 	getPopupButtons = () => {
 		console.log('test');
 		return (
 			[
-			<Button onPress={this.props.onApply}>
-				Apply
+				<Button onPress={_ => this.props.onApply(this.state.menu)}>
+					Apply
 			</Button>
-			,
-			<Button onPress={this.props.onQuit}>
-				Close
+				,
+				<Button onPress={this.props.onQuit}>
+					Close
 			</Button>
 			]
 		);
 	};
 	getStore = () => {
 		return (
-			Logic.canBuyAtMap.products.map(x => (
+			Logic.canBuyAtMap.items.map(x => (
 				this.getListItem(x)
 			))
 		);
 	};
 	getListItem = (storeLogicItem) => {
 		return (
-			<SimpleText fontConfig={["ArcadeClassic", 30, "white"]}>
-				{storeLogicItem.name} - {storeLogicItem.cost} gold
-			</SimpleText>
+			<SimpleView
+				key={storeLogicItem.name}
+				margins={[0, 20, 0, 40]}
+				touch={this.getCanUseManageItem(storeLogicItem.name)}
+				onPress={_ => this.clickElement(storeLogicItem.name)}
+
+			>
+				<SimpleText
+					fontConfig={
+						["ArcadeClassic", 30, this.getItemColor(storeLogicItem.name)]} >
+					{storeLogicItem.name} - {storeLogicItem.cost}
+				</SimpleText>
+			</SimpleView>
 		);
+	};
+
+	getCanUseManageItem = (name) => {
+		
+		const itemInLogic = Logic.canBuyAtMap.items.filter(x => x.name == name);
+		if (itemInLogic && itemInLogic.length > 0) {
+			return itemInLogic[0].can(this.props.gameModel, this.props.gameProcessState);
+		}
+
+		return false;
+	};
+
+	getItemColor = (itemName) => {
+		if (this.state.menu == itemName)
+			return "yellow";
+		if(this.getCanUseManageItem(itemName)) {
+			return "white";
+		} else {
+			return "gray";
+		}
+	};
+
+	clickElement = (elementName) => {
+		if (this.state.menu == elementName) {
+			this.setState({
+				menu: ""
+			});
+		} else {
+			this.setState({
+				menu: elementName
+			});
+		}
+		
 	};
 
 	render() {
@@ -50,11 +95,11 @@ export default class MapShop extends PureComponent {
 				<SimpleView position={[30, 15, 40, 30]}>
 					<SimpleText fontConfig={["ArcadeClassic", 40, "white"]}>Shop</SimpleText>
 				</SimpleView>
-				
+
 				<SimpleView position={[15, 40, 70, 30]}>
 					{this.getStore()}
 				</SimpleView>
-				
+
 			</Popup>
 		);
 	}

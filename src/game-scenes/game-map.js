@@ -43,7 +43,9 @@ export default class GameMap extends PureComponent {
 	  this.state = {
 		gameModel: props.gameModel,
 		isMenuPopupVisible: false,
-		menuContent: {}
+		menuContent: {},
+		selectedRow: null,
+		selectedCol: null
 	  };
 	}
 
@@ -114,6 +116,9 @@ export default class GameMap extends PureComponent {
 					<Text style={{fontFamily: "ArcadeClassic", color: "white", fontSize: 30}}>
 						Respect - {this.state.gameModel.respect}
 					</Text>
+					<Text style={{fontFamily: "ArcadeClassic", color: "white", fontSize: 30}}>
+						Gold - {this.state.gameModel.gold}
+					</Text>
 				</SimpleView>
 
 				<SimpleView style={{backgroundColor: "#00EE00"}} position={[10, 30, 80, 50]}>
@@ -154,7 +159,11 @@ export default class GameMap extends PureComponent {
 
 	onClickManage = () => {
 		this.showPopup(
-			<MapManage onApply={this.onManageApply} onQuit={this.closePopup}>
+			<MapManage 
+			gameModel={this.state.gameModel}
+			gameProcessState={{selectedBuilding: {row: this.state.selectedRow, col: this.state.selectedCol}}} 
+			onApply={this.onManageApply} 
+			onQuit={this.closePopup}>
 
 			</MapManage>
 		)
@@ -162,7 +171,11 @@ export default class GameMap extends PureComponent {
 
 	onClickShop = () => {
 		this.showPopup(
-			<MapShop onBuy={this.onBuy} onQuit={this.closePopup}>
+			<MapShop 
+			gameModel={this.state.gameModel}
+			gameProcessState={{selectedBuilding: {row: this.state.selectedRow, col: this.state.selectedCol}}} 
+			onApply={this.onBuy} 
+			onQuit={this.closePopup}>
 
 			</MapShop>
 		);
@@ -172,12 +185,29 @@ export default class GameMap extends PureComponent {
 
 	};
 
-	onBuy = () => {
-		this.showPopup();
-	};
-
-	onManageApply = (result) => {
-
+	onBuy = (menuName) => {
+		this.closePopup();
+		if (!menuName) {
+			return;
+		}
+		const managerItems = Logic.canBuyAtMap.items.filter(x => x.name == menuName);
+		if (managerItems && managerItems.length > 0) {
+			managerItems[0].modifier(this.state.gameModel);
+			Manager.updateCurrentGame(this.state.gameModel);
+		}
+	}  
+	
+	onManageApply = (menuName) => {
+		this.closePopup();
+		if (!menuName) {
+			return;
+		}
+		const managerItems = Logic.mapManage.items.filter(x => x.name == menuName);
+		if (managerItems && managerItems.length > 0) {
+			managerItems[0].modifier(this.state.gameModel);
+			Manager.updateCurrentGame(this.state.gameModel);
+		}
+		
 	};
 
 	onSubmitBuild = (building) => {

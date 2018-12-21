@@ -37,6 +37,7 @@ export default class NewGameMap extends React.Component {
 
 	  //TODO
 	  this.state.gameModel.map = Generator.generateMap();
+	  this.state.gameModel.gold = 100;
 	}
 
 	createStartGameModel= () => {

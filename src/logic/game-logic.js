@@ -32,11 +32,15 @@ const preHistoryMessages = {
 };
 
 const canBuyAtMap = {
-	products: [
+	items: [
 		{
 			name: "Allow build",
 			cost: 50,
 			modifier(gameModel, config) {
+				if(!config || !config.row) {
+					return;
+				}
+
 				gameModel.allowBuilds.push({row: config.row, col: config.col})
 				gameModel.gold -= 50;
 			},
@@ -64,11 +68,11 @@ const mapManage = {
 			name: "Buy shaurma",
 			cost: 50,
 			modifier(gameModel, config) {
-				gameModel.respect += config.count;
-				gameModel.money -= config.count;
+				gameModel.respect += 50;
+				gameModel.money -= 50;
 			},
 			can(gameModel, config) {
-				return gameModel.money >= config.count;
+				return gameModel.money >= 50;
 			}
 		},
 		{
@@ -90,7 +94,7 @@ const mapManage = {
 					));
 			},
 			can(gameModel, config) {
-				return gameModel.money >= 10;
+				return gameModel.money >= 10 && config.selectedBuilding.row !== null;
 			}
 		}
 	]

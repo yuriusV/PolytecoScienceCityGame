@@ -5,20 +5,41 @@ import EStyleSheet from "react-native-extended-stylesheet";
 import Popup from "../../menus/menu-items/popup"
 import Button from "../../menus/menu-items/button"
 import SimpleView from "../../game-scenes/scene-elements/simple-view"
-
+import SimpleText from  "../../game-scenes/scene-elements/simple-font"
 import Logic from "../../logic/game-logic"
 
 export default class MapManage extends PureComponent {
 	constructor(props) {
 		super(props);
-		this.state = {};
+		this.state = {
+			menu: ""
+		};
 	}
+
+	getCanUseManageItem = (name) => {
+		const itemInLogic = Logic.mapManage.items.filter(x => x.name == name);
+		if (itemInLogic && itemInLogic.length > 0) {
+			return itemInLogic[0].can(this.props.gameModel, this.props.gameProcessState);
+		}
+
+		return false;
+	};
+
+	getItemColor = (itemName) => {
+		if (this.state.menu == itemName)
+			return "yellow";
+		if(this.getCanUseManageItem(itemName)) {
+			return "white";
+		} else {
+			return "gray";
+		}
+	};
 
 	getPopupButtons = () => {
 		console.log('test');
 		return (
 			[
-			<Button onPress={this.props.onApply}>
+			<Button onPress={_ => this.props.onApply(this.state.menu)}>
 				Apply
 			</Button>
 			,
@@ -37,12 +58,32 @@ export default class MapManage extends PureComponent {
 	};
 	getListItem = (storeLogicItem) => {
 		return (
-			<SimpleView margins={[0, 20, 0, 40]}>
-				<Text style={styles.textStyle}>
+			<SimpleView 
+				key={storeLogicItem.name} 
+				margins={[0, 20, 0, 40]} 
+				touch={this.getCanUseManageItem(storeLogicItem.name)}
+				onPress={_ => this.clickElement(storeLogicItem.name)}
+				
+				>
+				<SimpleText 
+					fontConfig={
+						["ArcadeClassic", 30, this.getItemColor(storeLogicItem.name)]} >
 					{storeLogicItem.name} - {storeLogicItem.cost}
-				</Text>
+				</SimpleText>
 			</SimpleView>
 		);
+	};
+	clickElement = (elementName) => {
+		if (this.state.menu == elementName) {
+			this.setState({
+				menu: ""
+			});
+		} else {
+			this.setState({
+				menu: elementName
+			});
+		}
+		
 	};
 
 	render() {
