@@ -35,6 +35,7 @@ export default class SideButton extends PureComponent {
 					color: 'white',
 					fontFamily: "ArcadeClassic", 
 					fontSize: 40,
+					top: 10,
 					textAlignVertical: "center",
 					textAlign: "center"}}>
 

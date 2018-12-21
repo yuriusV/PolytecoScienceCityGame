@@ -1,6 +1,7 @@
 import Small from "../../assets/tiles/small.png"
 import Medium from "../../assets/tiles/medium.png"
 import Big from "../../assets/tiles/big.png"
+import Stone from "../../assets/tiles/stone.png"
 
 
 const gameScenes = {
@@ -70,6 +71,31 @@ const canBuyAtMap = {
 const mapManage = {
 	items: [
 		{
+			name: "Build lucky stone",
+			cost: 300,
+			modifier(gameModel, config) {
+				gameModel.money -= 300;
+				gameModel.buildings.push({
+					type: "stone",
+					position: {
+						row: config.selectedRow,
+						col: config.selectedCol
+					}
+				});
+			},
+			can(gameModel, config) {
+				const hasBuilding = gameModel.buildings.filter(
+					x => x.position.row == config.selectedRow
+						&& x.position.col == config.selectedCol);
+
+				return 
+					gameModel.money >= 300 
+					&& gameModel.respect > 10
+					&& !hasBuilding
+				;
+			}
+		},
+		{
 			name: "Buy shaurma",
 			cost: 50,
 			modifier(gameModel, config) {
@@ -109,41 +135,73 @@ const buildings = {
 	items: [
 		{
 			name: "Small",
+			type: "small",
 			image: Small,
 			cost: 100,
 			peoplesMax: 100,
 			countBlocks: 10,
-			paymentFromOnePeople: 1,
-			respectFromOnePeople: 1,
+			paymentFromOnePeople: 0.001,
+			respectFromOnePeople: 0.001,
 
 			can(gameModel, config) {
 				return gameModel.money >= 100;
+			},
+			onTimeUpdate(gameModel, config, building, stateUpdater) {
+				console.log(gameModel.respect);
+				gameModel.respect += building.countPeoples * 0.001;
+				gameModel.money += building.countPeoples * 0.001;
+				
 			}
 		},
 		{
 			name: "Medium",
+			type: "medium",
 			image: Medium,
 			cost: 200,
 			peoplesMax: 200,
 			countBlocks: 20,
-			paymentFromOnePeople: 2,
-			respectFromOnePeople: 2,
+			paymentFromOnePeople: 0.002,
+			respectFromOnePeople: 0.002,
 
 			can(gameModel, config) {
 				return gameModel.money >= 200;
+			},
+			onTimeUpdate(gameModel, config, building, stateUpdater) {
+				gameModel.respect += building.countPeoples * 0.002;
+				gameModel.money += building.countPeoples * 0.002;
+				
 			}
 		},
 		{
 			name: "Big",
+			type: "big",
 			image: Big,
 			cost: 300,
 			peoplesMax: 300,
 			countBlocks: 30,
-			paymentFromOnePeople: 3,
-			respectFromOnePeople: 3,
+			paymentFromOnePeople: 0.003,
+			respectFromOnePeople: 0.003,
 
 			can(gameModel, config) {
 				return gameModel.money >= 300;
+			},
+			onTimeUpdate(gameModel, config, building, stateUpdater) {
+				gameModel.respect += building.countPeoples * 0.003;
+				gameModel.money += building.countPeoples * 0.003;
+				
+			}
+		},
+		{
+			name: "Lucky Stone",
+			type: "stone",
+			image: Stone,
+			cost: 300,
+			can(gameModel, config) {
+				return gameModel.money >= 300;
+			},
+			onTimeUpdate(gameModel, config, building, stateUpdater) {
+				gameModel.respect -= 1;
+				gameModel.money += 20;
 			}
 		}
 	]

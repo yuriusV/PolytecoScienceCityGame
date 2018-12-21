@@ -1,4 +1,4 @@
-import React, { PureComponent } from "react";
+import React, { PureComponent, Component } from "react";
 import {
   ScrollView,
   Text,
@@ -37,7 +37,7 @@ import Fence from "../../assets/tiles/fence.png"
 import Ruined from "../../assets/tiles/ruined.png"
 
 
-export default class GameMap extends PureComponent {
+export default class GameMap extends Component {
 	constructor(props) {
 	  super(props);
 	  this.state = {
@@ -65,7 +65,30 @@ export default class GameMap extends PureComponent {
 		type: "medium", // "small" | "medium" | "big"
 		countPeoples: 10
 	  })
+
+	  this.state.gameModel.buildings.push({
+		position: {row: 1, col: 3},
+		type: "stone", // "small" | "medium" | "big"
+		countPeoples: 10
+	  })
+
+	  this.createUpdater();
 	}
+
+	getBuildingByType = (type) => {
+		return Logic.buildings.items.filter(x => x.type == type)[0];
+	};
+
+	createUpdater = () => {
+		const interval = setInterval(() => {
+			for(let i in this.state.gameModel.buildings) {
+				const bModel = this.state.gameModel.buildings[i];
+				const b = this.getBuildingByType(bModel.type);
+				b.onTimeUpdate && b.onTimeUpdate(this.state.gameModel, this.state, bModel, this.setState.bind(this));
+			}
+
+		}, 3000);
+	};
 
 	getImageByTypeMap = (type) => {
 		const map = {
@@ -77,11 +100,11 @@ export default class GameMap extends PureComponent {
 	};
 
 	getImageByBuilding = (type) => {
-		console.log('AAAAAAAAa', type);
 		const map = {
 			"small": HouseSmall,
 			"medium": HouseMedium,
-			"big": HouseBig
+			"big": HouseBig,
+			"stone": Stone
 		};
 
 		return map[type];
@@ -156,10 +179,10 @@ export default class GameMap extends PureComponent {
 					position={[20, 14, 40, 10]}>
 				
 					<Text style={{fontFamily: "ArcadeClassic", color: "white", fontSize: 30}}>
-						Money - {this.state.gameModel.money}
+						Money - {Math.floor(this.state.gameModel.money)}
 					</Text>  
 					<Text style={{fontFamily: "ArcadeClassic", color: "white", fontSize: 30}}>
-						Respect - {this.state.gameModel.respect}
+						Respect - {Math.floor(this.state.gameModel.respect)}
 					</Text>
 					<Text style={{fontFamily: "ArcadeClassic", color: "white", fontSize: 30}}>
 						Gold - {this.state.gameModel.gold}
