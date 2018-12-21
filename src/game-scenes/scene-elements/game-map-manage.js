@@ -4,6 +4,7 @@ import * as Animatable from "react-native-animatable";
 import EStyleSheet from "react-native-extended-stylesheet";
 import Popup from "../../menus/menu-items/popup"
 import Button from "../../menus/menu-items/button"
+import SimpleView from "../../game-scenes/scene-elements/simple-view"
 
 import Logic from "../../logic/game-logic"
 
@@ -29,32 +30,47 @@ export default class MapManage extends PureComponent {
 	};
 	getStore = () => {
 		return (
-			Logic.mapManage.map(x => (
+			Logic.mapManage.items.map(x => (
 				this.getListItem(x)
 			))
 		);
 	};
 	getListItem = (storeLogicItem) => {
 		return (
-			<Text>
-				{storeLogicItem.name}
-			</Text>
+			<SimpleView margins={[0, 20, 0, 40]}>
+				<Text style={styles.textStyle}>
+					{storeLogicItem.name} - {storeLogicItem.cost}
+				</Text>
+			</SimpleView>
 		);
 	};
 
 	render() {
 		return (
 			<Popup buttons={this.getPopupButtons()}>
-				<Text>Manage</Text>
-				<View>
-					{this.getStore}
-				</View>
+				<SimpleView position={[30, 15, 40, 30]}>
+					<Text style={styles.textHeaderStyle}>Manage</Text>
+				</SimpleView>
+				
+				<SimpleView position={[15, 40, 70, 30]}>
+					{this.getStore()}
+				</SimpleView>
 			</Popup>
 		);
 	}
 }
 
 const styles = EStyleSheet.create({
+	textStyle: {
+		fontSize: 30,
+		fontFamily: "ArcadeClassic",
+		color: 'white'
+	},
+	textHeaderStyle: {
+		fontSize: 40,
+		fontFamily: "ArcadeClassic",
+		color: 'white'
+	},
 	container: {
 		margin: 0,
 		padding: 0,
