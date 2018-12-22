@@ -48,29 +48,7 @@ export default class GameMap extends Component {
 		selectedCol: null
 	  };
 
-	  this.state.gameModel.buildings.push({
-		position: {row: 0, col: 0},
-		type: "small", // "small" | "medium" | "big"
-		countPeoples: 10
-	  })
-
-	  this.state.gameModel.buildings.push({
-		position: {row: 5, col: 3},
-		type: "big", // "small" | "medium" | "big"
-		countPeoples: 10
-	  })
-
-	  this.state.gameModel.buildings.push({
-		position: {row: 4, col: 3},
-		type: "medium", // "small" | "medium" | "big"
-		countPeoples: 10
-	  })
-
-	  this.state.gameModel.buildings.push({
-		position: {row: 1, col: 3},
-		type: "stone", // "small" | "medium" | "big"
-		countPeoples: 10
-	  })
+	  console.log(props.gameModel.id);
 
 	  this.createUpdater();
 	}
@@ -138,6 +116,7 @@ export default class GameMap extends Component {
 
 				allCells.push(
 					<SimpleView
+						key={String(row) + ';' + String(col)}
 						style={{
 							backgroundColor: 
 								this.state.selectedRow == row 

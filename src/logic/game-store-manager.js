@@ -30,7 +30,7 @@ const ensureTablesExists = (success) => {
 
 
 const updateCurrentGame = (game, callback) => {
-	console.log('AAAAAAadb', game);
+	console.log('AAAAAAadb', game.id);
 	if (!game.id) {
 		game.id = randomInt(0, 9999999);
 		db.executeSql(`
@@ -92,6 +92,7 @@ const getSavedGames = (callback) => {
 
 				db.executeSql(`select name, gold from Account limit 1`, [], (res)=>{
 					callback(collection.map(x => ({
+						id: x.id,
 						gameUserName: x.gameUserName,
 						gameCity: x.gameCity,
 						money: x.money,

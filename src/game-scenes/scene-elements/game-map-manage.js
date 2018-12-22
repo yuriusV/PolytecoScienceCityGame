@@ -59,7 +59,7 @@ export default class MapManage extends PureComponent {
 	getListItem = (storeLogicItem) => {
 		return (
 			<SimpleView 
-				key={storeLogicItem.name} 
+				key={storeLogicItem.name + storeLogicItem.cost} 
 				margins={[0, 20, 0, 40]} 
 				touch={this.getCanUseManageItem(storeLogicItem.name)}
 				onPress={_ => this.clickElement(storeLogicItem.name)}

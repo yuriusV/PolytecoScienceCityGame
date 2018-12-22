@@ -37,6 +37,7 @@ export default class SavedGamesMenu extends React.Component {
 	  };
 
 	  manager.getSavedGames((games) => {
+		  console.log(games.map(x => x.Id))
 		this.setState({
 			games
 		});
