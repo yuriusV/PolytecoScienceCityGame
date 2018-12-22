@@ -19,13 +19,14 @@ const mapItem = () => ({
 });
 
 const modelOfGame = () => ({
+	id: 0,
 	gameUserName: "",
 	gameCity: "",
 	money: initialConsts.startMoney,
 	respect: initialConsts.startRespect,
 	map: [],
 	buildings: [],
-	secondsPlayed: 0,
+	saveUnixTime : 0,
 	gold: 0,
 	allowBuilds: []
 });

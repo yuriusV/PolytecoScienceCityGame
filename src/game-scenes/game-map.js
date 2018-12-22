@@ -86,7 +86,7 @@ export default class GameMap extends Component {
 				const b = this.getBuildingByType(bModel.type);
 				b.onTimeUpdate && b.onTimeUpdate(this.state.gameModel, this.state, bModel, this.setState.bind(this));
 			}
-
+			this.setState({});
 		}, 3000);
 	};
 

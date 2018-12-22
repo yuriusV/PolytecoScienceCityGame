@@ -26,7 +26,7 @@ export default class PolytecoGame extends PureComponent {
     this.state = {
 	  gameVisible: false,
 	  gameMode: null
-    };
+	};
   }
 
   async componentWillMount() {
