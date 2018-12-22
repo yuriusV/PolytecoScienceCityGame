@@ -119,7 +119,7 @@ export default class GameMap extends React.Component {
 				const diff = this.state.blocks.length == 1 ? 0 : Math.abs(this.state.blockX - 
 					((this.state.blocks[this.state.blocks.length - 2].x)));
 				
-				this.state.peoples += 10 - diff;
+				this.state.peoples += 10 - Math.floor(diff);
 				if (this.height >= 50) {
 					
 					this.state.shatalR += (this.state.blocks.length == 0? 0 : 

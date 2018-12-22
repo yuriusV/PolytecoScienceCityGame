@@ -251,6 +251,15 @@ export default class GameMap extends Component {
 	}; 
 
 	onSelectBuilding = (menu) => {
+		if(menu == "Lucky Stone") {
+			this.state.gameModel.buildings.push({
+				position: {row: this.state.selectedRow, col: this.state.selectedCol},
+				type: "stone"
+			});
+			Manager.updateCurrentGame(this.state.gameModel);
+			return;
+		}
+
 		this.state.interval && clearInterval(this.state.interval)
 		const building = Logic.buildings.items.filter(x => x.name == menu);
 		if (building && building.length > 0) {
