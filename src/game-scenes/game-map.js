@@ -179,9 +179,9 @@ export default class GameMap extends Component {
 				
 			 	{this.getPopup()}
 			</View>) : (
-				<BlockGame  
+				<BlockGame   
 					gameModel={this.state.gameModel}
-					buildingType={this.state.selectedBuildingType}
+					building ={this.state.building}
 					onQuit={result => this.onBlockGameFinished(result)}/>
 			)}
 		</ImageBackground>
@@ -245,7 +245,7 @@ export default class GameMap extends Component {
 		const building = Logic.buildings.items.filter(x => x.name == menu);
 		if (building && building.length > 0) {
 			this.state.gameModel.money -= building[0].cost;
-			this.setState({isGameStarted: true, selectedBuildingType: menu});
+			this.setState({isGameStarted: true, selectedBuildingType: menu, building: building[0]});
 		}
 		
 	};
