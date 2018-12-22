@@ -62,7 +62,7 @@ export default class MainMenu extends PureComponent {
 
 const styles = EStyleSheet.create({
   container: {
-	  paddingTop: '30%',
+	  paddingTop: '16%',
 	  paddingLeft: '10%'
   },
   contentContainer: {
