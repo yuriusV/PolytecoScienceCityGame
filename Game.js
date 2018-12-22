@@ -63,7 +63,7 @@ export default class PolytecoGame extends PureComponent {
 			break;
 		case Logic.gameScenes.blockGame:
 			currentContainer = 
-				<BlockGame onClose={_ => this.openMainMenu()}/>
+				<BlockGame onQuit={_ => this.openMainMenu()} building={{countBlocks: 200}}/>
 			break;
 		default: 
 			currentContainer = 

@@ -237,7 +237,17 @@ export default class GameMap extends Component {
 	};
 
 	onBlockGameFinished = (result) => {
+		this.state.gameModel.buildings.push({
+			countPeoples: result.peoples,
+			position: {row: this.state.selectedRow, col: this.state.selectedCol},
+			type: result.building.type
+		});
+		this.setState({
+			isGameStarted: false
+		});
+		Manager.updateCurrentGame(this.state.gameModel);
 		this.createUpdater();
+
 	}; 
 
 	onSelectBuilding = (menu) => {
